@@ -4,9 +4,12 @@ br = "build --release"
 c = "check"
 d = "doc"
 t = "test"
+tnc = "test -- --nocapture"
 r = "run"
 rr = "run --release"
 rm = "remove"
+
+# PS> Set-Alias -Name c -Value cargo
 
 
 # NOTE: For maximum performance, build using a nightly compiler

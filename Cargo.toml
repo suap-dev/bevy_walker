@@ -15,9 +15,10 @@ opt-level = 1 # suggested: 1
 opt-level = 3 # suggested: 3
 
 
-[dependencies]
+# [dependencies]
 # bevy_rapier3d = "0.27.0"
 # avian3d = "0.1"
+# bevy_editor_pls = "0.10"
 
 [dependencies.bevy]
 version = "0.14"
@@ -25,9 +26,8 @@ default-features = false
 features = [
     "bevy_winit",
     "bevy_pbr",
-    "tonemapping_luts",
     "bevy_core_pipeline",
+    "tonemapping_luts",
     "dynamic_linking",
     "multi_threaded",
-    # "bevy_color",
 ]
