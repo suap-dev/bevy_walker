@@ -1,16 +1,15 @@
-#![allow(warnings)]
-
 mod components;
 mod setup;
 mod systems;
 
-use std::f32::consts::TAU;
-
-use bevy::{ecs::query, math::vec3, prelude::*};
+use bevy::{
+    prelude::*,
+    window::{CursorGrabMode, PrimaryWindow},
+};
 
 use crate::{
-    components::*,
-    systems::{camera, entities, light},
+    components::{Rotator, Swinger},
+    systems::{entities, light, player, player_camera},
 };
 
 fn main() {
@@ -20,13 +19,28 @@ fn main() {
             Startup,
             (
                 light::startup::spawn,
-                camera::startup::spawn,
                 entities::startup::spawn_ground,
                 entities::startup::spawn_swinging_cube,
                 entities::startup::spawn_rotating_cuboid,
+                player_camera::startup::spawn,
+                player::spawn,
+                cursor_grab,
             ),
         )
-        .add_systems(Update, (entities::update::swing, entities::update::rotate))
+        .add_systems(
+            Update,
+            (
+                entities::update::swing,
+                entities::update::rotate,
+                player_camera::update::follow_player,
+                player::controls,
+            ),
+        )
         .run();
 }
 
+fn cursor_grab(mut q_windows: Query<&mut Window, With<PrimaryWindow>>) {
+    let mut primary_window = q_windows.single_mut();
+    primary_window.cursor.grab_mode = CursorGrabMode::Locked;
+    primary_window.cursor.visible = false;
+}

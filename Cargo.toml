@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 
-[profile.release]
-lto = true    # link time optimizations
-opt-level = 3 # suggested: "s" # stands for binary size
+[lints.clippy]
+pedantic = { level = "warn", priority = 0 }
+nursery = { level = "warn", priority = 0 }
+needless_pass_by_value = { level = "allow", priority = 1 }
+type_complexity = { level = "allow", priority = 1 }
+
 
 [profile.dev]
 opt-level = 1 # suggested: 1
@@ -15,9 +18,14 @@ opt-level = 1 # suggested: 1
 opt-level = 3 # suggested: 3
 
 
+[profile.release]
+lto = true    # link time optimizations
+opt-level = 3 # suggested: "s" # stands for binary size
+
+
 # [dependencies]
-# bevy_rapier3d = "0.27.0"
 # avian3d = "0.1"
+# bevy_rapier3d = "0.27.0"
 # bevy_editor_pls = "0.10"
 
 [dependencies.bevy]

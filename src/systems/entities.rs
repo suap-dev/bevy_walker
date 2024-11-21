@@ -1,5 +1,5 @@
 pub mod startup {
-    use crate::{Rotation, Swinger};
+    use crate::{components::Position, Rotator, Swinger};
     use bevy::{math::vec3, prelude::*};
     use std::f32::consts::TAU;
 
@@ -8,23 +8,18 @@ pub mod startup {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<StandardMaterial>>,
     ) {
-        let cuboid = Cuboid::from_size(vec3(2.0, 3.0, 1.0));
-        let mesh_handle = meshes.add(cuboid);
-
-        let purple_ish = Color::linear_rgb(135.0 / 255.0, 9.0 / 255.0, 120.0 / 255.0);
-        let color_handle = materials.add(purple_ish);
-
-        let transform = Transform::from_xyz(-12.0, 2.0, -10.0);
+        let purple_ish_color =
+            materials.add(Color::linear_rgb(135.0 / 255.0, 9.0 / 255.0, 120.0 / 255.0));
 
         commands.spawn((
-            Rotation {
+            Rotator {
                 angular_velocity: TAU / 5.0,
                 axis: Dir3::from_xyz(0.1, 0.5, 0.7).unwrap(),
             },
             PbrBundle {
-                mesh: mesh_handle,
-                material: color_handle,
-                transform,
+                mesh: meshes.add(Cuboid::from_size(vec3(2.0, 3.0, 1.0))),
+                material: purple_ish_color,
+                transform: Transform::from_xyz(-12.0, 2.0, -10.0),
                 ..default()
             },
         ));
@@ -35,13 +30,15 @@ pub mod startup {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<StandardMaterial>>,
     ) {
-        let transform = Transform::from_xyz(-9.0, 2.0, -12.0);
         commands.spawn((
-            Swinger::new(transform.translation, 1.0, 6.0),
+            Position(vec3(-9.0, 2.0, -12.0)),
+            Swinger {
+                amplitude: 1.0,
+                period: 6.0,
+            },
             PbrBundle {
                 mesh: meshes.add(Cuboid::from_length(1.0)),
                 material: materials.add(Color::WHITE),
-                transform,
                 ..default()
             },
         ));
@@ -69,22 +66,20 @@ pub mod startup {
 }
 
 pub mod update {
-    use crate::{Rotation, Swinger};
+    use crate::{components::Position, Rotator, Swinger};
     use bevy::prelude::*;
 
-    pub fn swing(mut query: Query<(&mut Transform, &mut Swinger)>, time: Res<Time>) {
-        for (mut transform, mut swinger) in query.iter_mut() {
-            // swinger.update(time.delta_seconds());
-            // transform.translation.y += swinger.get_delta_height(time.delta_seconds());
-            transform.translation = swinger.get_translation(time.elapsed_seconds());
+    pub fn swing(mut query: Query<(&mut Transform, &Position, &Swinger)>, time: Res<Time>) {
+        for (mut transform, Position(position), swinger) in &mut query {
+            transform.translation = swinger.get_translation(*position, time.elapsed_seconds());
         }
     }
 
-    pub fn rotate(mut query: Query<(&mut Transform, &Rotation)>, time: Res<Time>) {
-        for (mut transform, rotation) in &mut query {
+    pub fn rotate(mut query: Query<(&mut Transform, &Rotator)>, time: Res<Time>) {
+        for (mut transform, rotator) in &mut query {
             transform.rotate_axis(
-                rotation.axis,
-                rotation.angular_velocity * time.delta_seconds(),
+                rotator.axis,
+                rotator.angular_velocity * time.delta_seconds(),
             );
         }
     }
