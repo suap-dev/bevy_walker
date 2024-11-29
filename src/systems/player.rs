@@ -1,27 +1,34 @@
+use avian3d::prelude::*;
 use bevy::{input::mouse::MouseMotion, math::vec3, prelude::*};
 
-use crate::{components::{MaxSpeed, Player, Position, Swinger}, setup::MOUSE_SPEED};
+use crate::{
+    components::{MaxSpeed, Player, Position, Swinger},
+    setup::MOUSE_SPEED,
+};
 pub fn spawn(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     let size = vec3(1.0, 2.0, 1.0);
-    let amplitude = 0.05;
+    let amplitude = 0.1;
     let position = vec3(0.0, size.y / 2.0 + amplitude, 0.0);
     let transform = Transform::from_translation(position);
+    let shape = Cuboid::from_size(size);
 
     commands.spawn((
         Player,
+        RigidBody::Kinematic,
+        Collider::from(shape),
         Position(position),
-        // Rotation::default(),
+        Rotation::default(),
         Swinger {
             period: 4.0,
             amplitude,
         },
         MaxSpeed(10.0),
         PbrBundle {
-            mesh: meshes.add(Cuboid::from_size(size)),
+            mesh: meshes.add(shape),
             material: materials.add(Color::BLACK),
             transform,
             ..default()
@@ -60,11 +67,11 @@ pub fn controls(
         direction.x -= 1.0;
     }
 
-    let mouse_dx: f32 = mouse_motion.read().map(|v2| v2.delta.x).sum::<f32>();
+    let mouse_dx: f32 = mouse_motion.read().map(|mm| mm.delta.x).sum::<f32>();
 
     let (mut position, mut transform, &MaxSpeed(max_speed)) = player.single_mut();
 
-    transform.rotate_y(mouse_dx * -0.005 * MOUSE_SPEED);
+    transform.rotate_y(mouse_dx * -0.001 * MOUSE_SPEED);
     direction = (transform.rotation * direction).normalize_or_zero();
 
     // we don't want to change the translation of a player directly from here

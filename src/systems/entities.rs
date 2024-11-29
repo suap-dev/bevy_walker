@@ -1,7 +1,27 @@
 pub mod startup {
     use crate::{components::Position, Rotator, Swinger};
+    use avian3d::prelude::*;
     use bevy::{math::vec3, prelude::*};
     use std::f32::consts::TAU;
+
+    pub fn spawn_normal_cube(
+        mut commands: Commands,
+        mut meshes: ResMut<Assets<Mesh>>,
+        mut materials: ResMut<Assets<StandardMaterial>>,
+    ) {
+        let shape = Cuboid::from_length(2.0);
+
+        commands.spawn((
+            RigidBody::Dynamic,
+            Collider::from(shape),
+            PbrBundle {
+                mesh: meshes.add(shape),
+                material: materials.add(Color::WHITE),
+                transform: Transform::from_xyz(6.0, 1.2, 0.0),
+                ..default()
+            },
+        ));
+    }
 
     pub fn spawn_rotating_cuboid(
         mut commands: Commands,
@@ -49,12 +69,22 @@ pub mod startup {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<StandardMaterial>>,
     ) {
-        commands.spawn(PbrBundle {
-            mesh: meshes.add(Cylinder::new(40.0, 1.0)),
-            material: materials.add(Color::linear_rgb(0.0 / 255.0, 250.0 / 255.0, 162.0 / 255.0)),
-            transform: Transform::from_xyz(0.0, -0.5, 0.0),
-            ..default()
-        });
+        let shape = Cylinder::new(40.0, 1.0);
+
+        commands.spawn((
+            RigidBody::Static,
+            Collider::from(shape),
+            PbrBundle {
+                mesh: meshes.add(shape),
+                material: materials.add(Color::linear_rgb(
+                    0.0 / 255.0,
+                    250.0 / 255.0,
+                    162.0 / 255.0,
+                )),
+                transform: Transform::from_xyz(0.0, -0.5, 0.0),
+                ..default()
+            },
+        ));
 
         commands.spawn(PbrBundle {
             mesh: meshes.add(Cuboid::from_length(1.0)),
