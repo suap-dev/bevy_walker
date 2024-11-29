@@ -1,5 +1,5 @@
 pub mod startup {
-    use bevy::prelude::*;
+    use bevy::{color::palettes::css::ALICE_BLUE, prelude::*};
 
     use crate::setup::LIGHT_POSITION;
 
@@ -8,7 +8,7 @@ pub mod startup {
             point_light: PointLight {
                 shadows_enabled: true,
                 range: 60.0,
-                // color: todo!(),
+                color: bevy::prelude::Color::Srgba(ALICE_BLUE),
                 // intensity: todo!(),
                 // radius: todo!(),
                 // shadow_depth_bias: todo!(),
