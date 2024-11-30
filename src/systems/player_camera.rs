@@ -4,7 +4,7 @@ pub mod startup {
     use crate::components::PlayerCamera;
 
     pub fn spawn(mut commands: Commands) {
-        commands.spawn((PlayerCamera, Camera3dBundle::default()));
+        commands.spawn((PlayerCamera, Camera3d::default()));
     }
 }
 
