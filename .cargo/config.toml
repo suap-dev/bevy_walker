@@ -9,17 +9,15 @@ r = "run"
 rr = "run --release"
 rm = "remove"
 
+# NOTE: in PowerShell u can do this
 # PS> Set-Alias -Name c -Value cargo
-
 
 # NOTE: For maximum performance, build using a nightly compiler
 # If you are using rust stable, remove the "-Zshare-generics=y" below.
 [target.x86_64-pc-windows-msvc]
-linker = "rust-lld.exe" # Use LLD Linker
-rustflags = [
-    "-Zshare-generics=n", # (Nightly)
-    "-Zthreads=0",        # (Nightly) Use improved multithreading with the recommended amount of threads.
-]
+linker = "rust-lld.exe"
+rustflags = ["-Zshare-generics=n", "-Zthreads=0"]
+
 # Optional: Uncommenting the following improves compile times, but reduces the amount of debug info to 'line number tables only'
 # In most cases the gains are negligible, but if you are on macos and have slow compile times you should see significant gains.
 #[profile.dev]
