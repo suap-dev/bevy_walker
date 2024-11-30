@@ -16,12 +16,9 @@ pub mod startup {
                 angular_velocity: TAU / 5.0,
                 axis: Dir3::from_xyz(0.1, 0.5, 0.7).unwrap(),
             },
-            PbrBundle {
-                mesh: meshes.add(Cuboid::from_size(vec3(2.0, 3.0, 1.0))),
-                material: purple_ish_color,
-                transform: Transform::from_xyz(-12.0, 2.0, -10.0),
-                ..default()
-            },
+            Mesh3d(meshes.add(Cuboid::from_size(vec3(2.0, 3.0, 1.0)))),
+            Transform::from_xyz(-12.0, 2.0, -10.0),
+            MeshMaterial3d(purple_ish_color),
         ));
     }
 
@@ -36,11 +33,8 @@ pub mod startup {
                 amplitude: 1.0,
                 period: 6.0,
             },
-            PbrBundle {
-                mesh: meshes.add(Cuboid::from_length(1.0)),
-                material: materials.add(Color::WHITE),
-                ..default()
-            },
+            Mesh3d(meshes.add(Cuboid::from_length(1.0))),
+            MeshMaterial3d(materials.add(Color::WHITE)),
         ));
     }
 
@@ -49,19 +43,21 @@ pub mod startup {
         mut meshes: ResMut<Assets<Mesh>>,
         mut materials: ResMut<Assets<StandardMaterial>>,
     ) {
-        commands.spawn(PbrBundle {
-            mesh: meshes.add(Cylinder::new(40.0, 1.0)),
-            material: materials.add(Color::linear_rgb(0.0 / 255.0, 250.0 / 255.0, 162.0 / 255.0)),
-            transform: Transform::from_xyz(0.0, -0.5, 0.0),
-            ..default()
-        });
+        commands.spawn((
+            Mesh3d(meshes.add(Cylinder::new(40.0, 1.0))),
+            MeshMaterial3d(materials.add(Color::linear_rgb(
+                0.0 / 255.0,
+                250.0 / 255.0,
+                162.0 / 255.0,
+            ))),
+            Transform::from_xyz(0.0, -0.5, 0.0),
+        ));
 
-        commands.spawn(PbrBundle {
-            mesh: meshes.add(Cuboid::from_length(1.0)),
-            material: materials.add(Color::WHITE),
-            transform: Transform::from_xyz(0.0, -0.499, 0.0),
-            ..default()
-        });
+        commands.spawn((
+            Mesh3d(meshes.add(Cuboid::from_length(1.0))),
+            MeshMaterial3d(materials.add(Color::WHITE)),
+            Transform::from_xyz(0.0, -0.499, 0.0),
+        ));
     }
 }
 
@@ -71,7 +67,7 @@ pub mod update {
 
     pub fn swing(mut query: Query<(&mut Transform, &Position, &Swinger)>, time: Res<Time>) {
         for (mut transform, Position(position), swinger) in &mut query {
-            transform.translation = swinger.get_translation(*position, time.elapsed_seconds());
+            transform.translation = swinger.get_translation(*position, time.elapsed_secs());
         }
     }
 
@@ -79,7 +75,7 @@ pub mod update {
         for (mut transform, rotator) in &mut query {
             transform.rotate_axis(
                 rotator.axis,
-                rotator.angular_velocity * time.delta_seconds(),
+                rotator.angular_velocity * time.delta_secs(),
             );
         }
     }

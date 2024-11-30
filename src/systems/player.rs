@@ -1,6 +1,9 @@
 use bevy::{input::mouse::MouseMotion, math::vec3, prelude::*};
 
-use crate::{components::{MaxSpeed, Player, Position, Swinger}, setup::MOUSE_SPEED};
+use crate::{
+    components::{MaxSpeed, Player, Position, Swinger},
+    setup::MOUSE_SPEED,
+};
 pub fn spawn(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -20,12 +23,9 @@ pub fn spawn(
             amplitude,
         },
         MaxSpeed(10.0),
-        PbrBundle {
-            mesh: meshes.add(Cuboid::from_size(size)),
-            material: materials.add(Color::BLACK),
-            transform,
-            ..default()
-        },
+        Mesh3d(meshes.add(Cuboid::from_size(size))),
+        MeshMaterial3d(materials.add(Color::BLACK)),
+        transform,
     ));
 }
 
@@ -70,5 +70,5 @@ pub fn controls(
     // we don't want to change the translation of a player directly from here
     // because we also use a Swinger component to swing him up/down a bit;
     // swinger handles updating transform according to the Position component
-    position.0 += direction * time.delta_seconds() * max_speed;
+    position.0 += direction * time.delta_secs() * max_speed;
 }
