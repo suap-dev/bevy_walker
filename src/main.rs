@@ -41,6 +41,6 @@ fn main() {
 
 fn cursor_grab(mut q_windows: Query<&mut Window, With<PrimaryWindow>>) {
     let mut primary_window = q_windows.single_mut();
-    primary_window.cursor.grab_mode = CursorGrabMode::Locked;
-    primary_window.cursor.visible = false;
+    primary_window.cursor_options.grab_mode = CursorGrabMode::Locked;
+    primary_window.cursor_options.visible = false;
 }

@@ -19,8 +19,8 @@ opt-level = 3 # suggested: 3
 
 
 [profile.release]
-lto = true    # link time optimizations
-opt-level = 3 # suggested: "s" # stands for binary size
+lto = true      # link time optimizations
+opt-level = "s" # suggested: "s", which stands for binary size
 
 
 # [dependencies]
@@ -29,13 +29,15 @@ opt-level = 3 # suggested: "s" # stands for binary size
 # bevy_editor_pls = "0.10"
 
 [dependencies.bevy]
-version = "0.14"
+version = "0.15"
 default-features = false
 features = [
+    "bevy_window",
     "bevy_winit",
     "bevy_pbr",
     "bevy_core_pipeline",
     "tonemapping_luts",
     "dynamic_linking",
     "multi_threaded",
+    # "custom_cursor",
 ]
