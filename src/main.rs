@@ -3,6 +3,7 @@ mod setup;
 mod systems;
 
 use bevy::{
+    app::AppExit,
     prelude::*,
     window::{CursorGrabMode, PrimaryWindow},
 };
@@ -34,6 +35,7 @@ fn main() {
                 entities::update::rotate,
                 player_camera::update::follow_player,
                 player::controls,
+                handle_exit,
             ),
         )
         .run();
@@ -43,4 +45,11 @@ fn cursor_grab(mut q_windows: Query<&mut Window, With<PrimaryWindow>>) {
     let mut primary_window = q_windows.single_mut();
     primary_window.cursor_options.grab_mode = CursorGrabMode::Locked;
     primary_window.cursor_options.visible = false;
+}
+
+// TODO: this should be a part of something like "app_controls"
+fn handle_exit(mut exit: EventWriter<AppExit>, keyboard_input: Res<ButtonInput<KeyCode>>) {
+    if keyboard_input.pressed(KeyCode::Escape) {
+        exit.send(AppExit::Success);
+    }
 }
