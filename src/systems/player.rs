@@ -46,6 +46,8 @@ pub fn controls(
         keyboard_input.pressed(KeyCode::ArrowLeft) || keyboard_input.pressed(KeyCode::KeyA);
     let strafe_right =
         keyboard_input.pressed(KeyCode::ArrowRight) || keyboard_input.pressed(KeyCode::KeyD);
+    let jump =
+        keyboard_input.pressed(KeyCode::Space);
 
     if move_forward {
         direction.z -= 1.0;
@@ -58,6 +60,9 @@ pub fn controls(
     }
     if strafe_left {
         direction.x -= 1.0;
+    }
+    if jump {
+        direction.y += 1.0;
     }
 
     let mouse_dx: f32 = mouse_motion.read().map(|v2| v2.delta.x).sum::<f32>();
