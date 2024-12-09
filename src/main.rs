@@ -9,7 +9,7 @@ use bevy::{
 };
 
 use crate::{
-    components::{Rotator, Swinger},
+    components::{Rotator, Swinger, Velocity},
     systems::{entities, light, player, player_camera},
 };
 
@@ -35,7 +35,8 @@ fn main() {
                 entities::update::rotate,
                 player_camera::update::follow_player,
                 player::controls,
-                handle_exit,
+                listen_for_exit_event,
+                handle_physics,
             ),
         )
         .run();
@@ -47,9 +48,20 @@ fn cursor_grab(mut q_windows: Query<&mut Window, With<PrimaryWindow>>) {
     primary_window.cursor_options.visible = false;
 }
 
-// TODO: this should be a part of something like "app_controls"
-fn handle_exit(mut exit: EventWriter<AppExit>, keyboard_input: Res<ButtonInput<KeyCode>>) {
+// FIXME: this should be a part of something like "app_controls"
+fn listen_for_exit_event(
+    mut exit: EventWriter<AppExit>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+) {
     if keyboard_input.pressed(KeyCode::Escape) {
         exit.send(AppExit::Success);
     }
+}
+
+// TODO (primaty objective): implement this correctly
+pub fn handle_physics(mut player: Query<(&mut Transform, &mut Velocity)>, _time: Res<Time>) {
+    const _GRAVITY: f32 = -9.81;
+
+    let (transform, mut _velocity) = player.single_mut();
+    let mut _position = transform.translation;
 }

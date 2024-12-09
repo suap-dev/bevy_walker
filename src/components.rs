@@ -30,13 +30,8 @@ pub struct PlayerCamera;
 #[derive(Component)]
 pub struct Position(pub Vec3);
 
-// #[derive(Component)]
-// pub struct Rotation(pub Quat);
-// impl Default for Rotation {
-//     fn default() -> Self {
-//         Self(Quat::IDENTITY)
-//     }
-// }
-
 #[derive(Component)]
 pub struct MaxSpeed(pub f32);
+
+#[derive(Component)]
+pub struct Velocity(pub Vec3);
