@@ -73,10 +73,7 @@ pub mod update {
 
     pub fn rotate(mut query: Query<(&mut Transform, &Rotator)>, time: Res<Time>) {
         for (mut transform, rotator) in &mut query {
-            transform.rotate_axis(
-                rotator.axis,
-                rotator.angular_velocity * time.delta_secs(),
-            );
+            transform.rotate_axis(rotator.axis, rotator.angular_velocity * time.delta_secs());
         }
     }
 }

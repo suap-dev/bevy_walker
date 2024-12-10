@@ -29,8 +29,8 @@ pub fn controls(
     mut mouse_motion: EventReader<MouseMotion>,
     time: Res<Time>,
 ) {
-    let (mut transform, &MaxSpeed(max_speed), velocity) = player.single_mut();
-    let mut velocity = velocity.0;
+    let (mut transform, &MaxSpeed(max_speed), mut velocity) = player.single_mut();
+    let velocity = &mut velocity.0;
 
     let mut direction = Vec3::ZERO;
 

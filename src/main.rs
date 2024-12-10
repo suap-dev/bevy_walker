@@ -4,6 +4,7 @@ mod systems;
 
 use bevy::{
     app::AppExit,
+    math::vec3,
     prelude::*,
     window::{CursorGrabMode, PrimaryWindow},
 };
@@ -59,9 +60,23 @@ fn listen_for_exit_event(
 }
 
 // TODO (primaty objective): implement this correctly
-pub fn handle_physics(mut player: Query<(&mut Transform, &mut Velocity)>, _time: Res<Time>) {
-    const _GRAVITY: f32 = -9.81;
+pub fn handle_physics(
+    mut physical_query: Query<(&mut Transform, &mut Velocity)>,
+    time_resource: Res<Time>,
+) {
+    const GRAVITY: Vec3 = vec3(0.0, -9.81, 0.0);
 
-    let (transform, mut _velocity) = player.single_mut();
-    let mut _position = transform.translation;
+    let (mut transform, mut velocity) = physical_query.single_mut();
+
+    let position = &mut transform.translation;
+    let velocity = &mut velocity.0;
+    let delta = time_resource.delta_secs();
+
+    // do NOT change anythig ABOVE this line. put your code below it.
+
+    // u may need to use the asterisk operator
+    // to access velocity and position
+    // (*position, *velocity)
+    // since they're taken as refferences (line 71 and 72).
+    //
 }
