@@ -59,7 +59,6 @@ fn listen_for_exit_event(
     }
 }
 
-// TODO (primaty objective): implement this correctly
 pub fn handle_physics(
     mut physical_query: Query<(&mut Transform, &mut Velocity)>,
     time_resource: Res<Time>,
@@ -72,11 +71,11 @@ pub fn handle_physics(
     let velocity = &mut velocity.0;
     let delta = time_resource.delta_secs();
 
-    // do NOT change anythig ABOVE this line. put your code below it.
+    *position += *velocity * delta;
+    *velocity += GRAVITY * delta;
 
-    // u may need to use the asterisk operator
-    // to access velocity and position
-    // (*position, *velocity)
-    // since they're taken as refferences (line 71 and 72).
-    //
+    if position.y < 1.0 {
+        position.y = 1.0;
+        velocity.y = 0.0;
+    }
 }

@@ -58,9 +58,8 @@ pub fn controls(
         direction.x -= 1.0;
     }
 
-    // TODO (secondary objective): Finda actual limit for transform.translation.y so that jump makes sense
-    if jump && transform.translation.y < 10.0 {
-        velocity.y = 5.0;
+    if jump && transform.translation.y <= 1.0 {
+        velocity.y = 7.0;
     }
 
     let mouse_dx: f32 = mouse_motion.read().map(|v2| v2.delta.x).sum::<f32>();
@@ -68,4 +67,5 @@ pub fn controls(
     transform.rotate_y(mouse_dx * -0.005 * MOUSE_SPEED);
     direction = (transform.rotation * direction).normalize_or_zero();
     transform.translation += direction * time.delta_secs() * max_speed;
+    
 }
