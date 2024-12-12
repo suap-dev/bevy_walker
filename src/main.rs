@@ -24,6 +24,7 @@ fn main() {
                 entities::startup::spawn_ground,
                 entities::startup::spawn_swinging_cube,
                 entities::startup::spawn_rotating_cuboid,
+                entities::startup::spawn_dog,
                 player_camera::startup::spawn,
                 player::spawn,
                 cursor_grab,

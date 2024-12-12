@@ -59,6 +59,12 @@ pub mod startup {
             Transform::from_xyz(0.0, -0.499, 0.0),
         ));
     }
+
+    pub fn spawn_dog(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut materials: ResMut<Assets<StandardMaterial>>) {
+        let beige_color = materials.add(Color::linear_rgb(249.0 / 255.0, 196.0 / 255.0, 138.0 / 255.0));
+
+        commands.spawn((Mesh3d(meshes.add(Capsule3d::new(0.2, 0.7))), MeshMaterial3d(beige_color), Transform::from_xyz(0.9, 0.35, 3.0).with_rotation(Quat::from_rotation_x(1.6)),));
+    }
 }
 
 pub mod update {
