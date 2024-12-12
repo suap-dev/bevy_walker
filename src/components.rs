@@ -35,3 +35,6 @@ pub struct MaxSpeed(pub f32);
 
 #[derive(Component)]
 pub struct Velocity(pub Vec3);
+
+#[derive(Component)]
+pub struct Dog;

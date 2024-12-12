@@ -35,6 +35,7 @@ fn main() {
             (
                 entities::update::swing,
                 entities::update::rotate,
+                entities::update::noga,
                 player_camera::update::follow_player,
                 player::controls,
                 listen_for_exit_event,
