@@ -25,9 +25,9 @@ fn main() {
                 ground::spawn,
                 bonus_cuboids::spawn_swinging_cube,
                 bonus_cuboids::spawn_rotating_cuboid,
-                dog::spawn,
                 player_camera::spawn,
                 player::spawn,
+                dog::spawn,
                 cursor_grab,
             ),
         )
@@ -36,9 +36,9 @@ fn main() {
             (
                 bonus_cuboids::swing,
                 bonus_cuboids::rotate,
-                dog::follow_player,
                 player_camera::follow_player,
                 player::controls,
+                dog::follow_player,
                 listen_for_exit_event,
                 handle_physics,
             ),
