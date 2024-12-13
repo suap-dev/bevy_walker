@@ -1,4 +1,3 @@
-pub mod startup {
     use bevy::prelude::*;
 
     use crate::setup::LIGHT_POSITION;
@@ -13,4 +12,3 @@ pub mod startup {
             Transform::from_translation(LIGHT_POSITION),
         ));
     }
-}

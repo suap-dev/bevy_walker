@@ -1,3 +1,4 @@
+mod bundles;
 mod components;
 mod setup;
 mod systems;
@@ -10,8 +11,8 @@ use bevy::{
 };
 
 use crate::{
-    components::{Rotator, Swinger, Velocity},
-    systems::{entities, light, player, player_camera},
+    components::Velocity,
+    systems::{bonus_cuboids, dog, ground, light, player, player_camera},
 };
 
 fn main() {
@@ -20,12 +21,12 @@ fn main() {
         .add_systems(
             Startup,
             (
-                light::startup::spawn,
-                entities::startup::spawn_ground,
-                entities::startup::spawn_swinging_cube,
-                entities::startup::spawn_rotating_cuboid,
-                entities::startup::spawn_dog,
-                player_camera::startup::spawn,
+                light::spawn,
+                ground::spawn,
+                bonus_cuboids::spawn_swinging_cube,
+                bonus_cuboids::spawn_rotating_cuboid,
+                dog::spawn,
+                player_camera::spawn,
                 player::spawn,
                 cursor_grab,
             ),
@@ -33,10 +34,10 @@ fn main() {
         .add_systems(
             Update,
             (
-                entities::update::swing,
-                entities::update::rotate,
-                entities::update::noga,
-                player_camera::update::follow_player,
+                bonus_cuboids::swing,
+                bonus_cuboids::rotate,
+                dog::follow_player,
+                player_camera::follow_player,
                 player::controls,
                 listen_for_exit_event,
                 handle_physics,
