@@ -1,5 +1,3 @@
-use std::f32::consts::TAU;
-
 use bevy::{math::vec3, prelude::*};
 
 use crate::components::{Dog, MaxSpeed, Player};
@@ -17,13 +15,13 @@ pub fn spawn(
 
     let transform = Transform {
         translation: vec3(3.0, 0.35, 1.0),
-        rotation: Quat::from_rotation_x(TAU / 4.0),
         scale: Vec3::ONE,
+        ..default()
     };
 
     commands.spawn((
         Dog,
-        Mesh3d(meshes.add(Capsule3d::new(0.2, 0.7))),
+        Mesh3d(meshes.add(Cuboid::from_size(vec3(0.4, 0.4, 1.4)))),
         MeshMaterial3d(beige_color),
         transform,
         MaxSpeed(3.5),
@@ -55,14 +53,14 @@ pub fn follow_player(
     let player_position = player_transform.translation;
 
     for mut dog in &mut dog_query {
-        // Vec(Player) - Vec(Dog) = wektor od psa do gracza
-        let dog_position = &mut dog.0.translation;
-        let max_speed = dog.1 .0;
-        // direction - to już znormalizowany (czyli o długości 1) wektor kierunku
-        let dog_player_vector = (player_position - *dog_position).xz();
-        if dog_player_vector.length() > 2.0 {
-            let direction = dog_player_vector.normalize();
-            *dog_position += direction.extend(0.0).xzy() * max_speed * time.delta_secs();
+        let dog_transform = &mut dog.0;
+        let dog_speed = dog.1 .0;
+        let direction = (player_position - dog_transform.translation).with_y(0.0);
+
+        dog_transform.align(Dir3::Z, direction, Dir3::Y, Dir3::Y);
+
+        if direction.length() > 2.0 {
+            dog_transform.translation += direction.normalize() * dog_speed * time.delta_secs();
         }
     }
 }
